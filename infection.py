@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+
+import random
+
 class Teacher:
     """Holds a typical classroom with a single Teacher and many Students."""
 
@@ -7,7 +11,7 @@ class Teacher:
         @param num_students : the number of students in the classroom, default 0
         """
         self._infected = False;
-        self._students = [Student(self) for i in xrange(num_students)]
+        self._students = [Student(self) for i in range(num_students)]
 
     @property
     def num_students(self):
@@ -25,7 +29,7 @@ class Teacher:
     def num_infected(self):
         """The number of infected users in this classroom (including the
            teacher)."""
-        return self.infected + sum(1 if student.infected else 0 for student in self._students)
+        return self.infected + sum(student.infected for student in self._students)
 
     @property
     def infected(self):
@@ -79,7 +83,7 @@ class Student:
         if spread:
             self._teacher.infect(infect, True)
 
-def test():
+def test(verbose = False):
     """Runs correctness tests, first pre-defined then randomized scenarios.
 
     Aborts on error, or prints a success message if all tests were passed."""
@@ -100,15 +104,37 @@ def test():
     t2.infect()
     t3.infect(spread = False)
 
-    assert t1.infected == False
-    assert t1.num_infected == 0
-    assert t2.infected == True
-    assert t2.num_infected == 31
-    assert t3.infected == True
-    assert t3.num_infected == 1
+    assert t1.infected == False and t1.num_infected == 0
+    assert t2.infected == True  and t2.num_infected == 31
+    assert t3.infected == True  and t3.num_infected == 1
 
-    print "All tests passed."
+    NUM_TESTS = 3
+
+    classrooms = []
+    for i in range(NUM_TESTS):
+        if verbose:
+            print("\n### Randomized Test {} ###\n".format(i+1))
+
+        num_students = max(0, int(random.normalvariate(500, 50)))
+        remaining_students = num_students
+        while remaining_students > 0:
+            classroom_size = max(0, int(random.normalvariate(30, 10)))
+            classroom_size = min(remaining_students, classroom_size)
+            teacher = Teacher(classroom_size)
+            remaining_students -= classroom_size
+
+            assert teacher.num_students == classroom_size
+            assert teacher.num_users == 1 + classroom_size
+            assert teacher.infected == False
+            assert teacher.num_infected == 0
+
+            if verbose:
+                print("Created classroom with {} students.".format(classroom_size))
+
+    if verbose:
+        print("\n")
+    print("All tests passed.")
 
 if __name__ == "__main__":
-    test()
+    test(verbose = True)
     
