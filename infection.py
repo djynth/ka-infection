@@ -96,3 +96,6 @@ class Student:
         self._infected = infect
         if spread:
             self._teacher.infect(infect, True)
+
+if __name__ == "__main__":
+    main()
