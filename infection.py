@@ -6,8 +6,8 @@ class Teacher:
 
         @param num_students : the number of students in the classroom, default 0
         """
-        self._students = [Student for i in xrange(num_students)]
         self._infected = False;
+        self._students = [Student(self) for i in xrange(num_students)]
 
     @property
     def num_students(self):
@@ -25,7 +25,7 @@ class Teacher:
     def num_infected(self):
         """The number of infected users in this classroom (including the
            teacher)."""
-        return self.infected + sum(student.infected for student in students)
+        return self.infected + sum(1 if student.infected else 0 for student in self._students)
 
     @property
     def infected(self):
@@ -45,7 +45,7 @@ class Teacher:
         """
         self._infected = infect
         if spread:
-            for student in students:
+            for student in self._students:
                 student.infect(infect, False)
 
     def __str__(self):
@@ -79,5 +79,36 @@ class Student:
         if spread:
             self._teacher.infect(infect, True)
 
+def test():
+    """Runs correctness tests, first pre-defined then randomized scenarios.
 
+    Aborts on error, or prints a success message if all tests were passed."""
+
+    t1 = Teacher(1)
+    t2 = Teacher(30)
+    t3 = Teacher(7)
+
+    assert t1.num_students == 1  and t1.num_users == 2
+    assert t2.num_students == 30 and t2.num_users == 31
+    assert t3.num_students == 7  and t3.num_users == 8
+    assert t1.infected == False and t1.num_infected == 0
+    assert t2.infected == False and t2.num_infected == 0
+    assert t3.infected == False and t3.num_infected == 0
+
+    t1.infect(infect = True)
+    t1.infect(infect = False)
+    t2.infect()
+    t3.infect(spread = False)
+
+    assert t1.infected == False
+    assert t1.num_infected == 0
+    assert t2.infected == True
+    assert t2.num_infected == 31
+    assert t3.infected == True
+    assert t3.num_infected == 1
+
+    print "All tests passed."
+
+if __name__ == "__main__":
+    test()
     
