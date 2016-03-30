@@ -115,7 +115,7 @@ def usage():
 def main(argv):
     try:
         opts, args = getopt.getopt(argv, "hvbn:d:",
-            ["help", "verbose", "bruteforce"])
+            ["help", "verbose", "bf"])
     except getopt.GetoptError:
         usage()
         return
@@ -130,7 +130,7 @@ def main(argv):
             return
         elif opt in ["-v", "verbose"]:
             verbose = True
-        elif opt in ["-b", "bruteforce"]:
+        elif opt in ["-b", "bf"]:
             bf = True
         elif opt in ["-n"]:
             num_tests = int(arg)
@@ -150,7 +150,7 @@ def main(argv):
         remaining_students = num_students
         classrooms = []
         while remaining_students > 0:
-            classroom_size = max(0, int(random.normalvariate(40, 5)))
+            classroom_size = max(0, int(random.normalvariate(30, 10)))
             classroom_size = min(remaining_students, classroom_size)
             remaining_students -= classroom_size
             classrooms.append(Teacher(classroom_size))
