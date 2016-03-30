@@ -28,7 +28,7 @@ def test_infected(teacher, infected = True):
         student = teacher.get_student(i)
         assert student.infected == infected
 
-def test(verbose, num_tests):
+def test_total_infection(verbose, num_tests):
     """Runs randomized correctness tests for the Total Infection scenario.
 
     For each test, we create a number of separate classrooms, where both the 
@@ -44,11 +44,11 @@ def test(verbose, num_tests):
 
     Aborts on error, or prints a success message if all tests were passed."""
 
-    print("Running {} tests...".format(num_tests))
+    print("Running {} Total Infeciton tests...".format(num_tests))
 
     for i in range(num_tests):
         if verbose:
-            print("\n### Randomized Test {} ###\n".format(i+1))
+            print("\n### Total Infection Test {} ###\n".format(i+1))
 
         num_students = max(0, int(random.normalvariate(500, 50)))
         remaining_students = num_students
@@ -97,8 +97,7 @@ def test(verbose, num_tests):
                 test_infected(teacher, False)
 
         if verbose:
-            print("")
-            print("Created {} classrooms, infecting one-by-one...".format(num_classrooms))
+            print("\nCreated {} classrooms, infecting one-by-one...".format(num_classrooms))
 
         # now, infect all the students in all the classrooms, one by one
         #  (checking along the way that the infection was done correctly and did
@@ -129,10 +128,9 @@ def test(verbose, num_tests):
     print("All tests passed.")
 
 def usage():
-    """Prints brief usage information on how to run tests."""
     print("Runs randomized correctness tests for the Total Infection scenario.")
     print("   -h | --help    : print this help message")
-    print("   -v | --verbose : print verbose output for each test (default false)")
+    print("   -v | --verbose : print verbose output for each test")
     print("   -n TESTS       : run TESTS number of tests (default 100)")
 
 def main(argv):
@@ -153,7 +151,7 @@ def main(argv):
         elif opt in ["-n"]:
             num_tests = int(arg)
 
-    test(verbose = verbose, num_tests = num_tests)
+    test_total_infection(verbose = verbose, num_tests = num_tests)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

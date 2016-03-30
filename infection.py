@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import random
 
 class Teacher:
@@ -36,7 +34,7 @@ class Teacher:
         """Whether the teacher of this classroom has been infected.
 
         Typically, but not always, students will be infected when the teacher
-            is.
+         is.
         """
         return self._infected
 
@@ -64,6 +62,7 @@ class Teacher:
         """Gets a random student in this classroom."""
         if self.num_students == 0:
             return None
+        return random.choice(self._students)
         return self.get_student(random.randint(0, self.num_students-1))
 
     def __str__(self):
@@ -96,6 +95,3 @@ class Student:
         self._infected = infect
         if spread:
             self._teacher.infect(infect, True)
-
-if __name__ == "__main__":
-    main()
