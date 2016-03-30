@@ -25,8 +25,7 @@ def test_infected(teacher, infected = True):
     assert teacher.infected == infected
     assert teacher.num_infected == (teacher.num_users if infected else 0)
     for i in range(teacher.num_students):
-        student = teacher.get_student(i)
-        assert student.infected == infected
+        assert teacher.get_student(i).infected == infected
 
 def test_total_infection(verbose, num_tests):
     """Runs randomized correctness tests for the Total Infection scenario.
@@ -64,7 +63,8 @@ def test_total_infection(verbose, num_tests):
             num_classrooms += 1
 
             if verbose:
-                print("Created classroom with {} students.".format(classroom_size))
+                print("Created classroom with {} students."
+                    .format(classroom_size))
 
             test_size(teacher, classroom_size)
             test_infected(teacher, False)
@@ -97,7 +97,8 @@ def test_total_infection(verbose, num_tests):
                 test_infected(teacher, False)
 
         if verbose:
-            print("\nCreated {} classrooms, infecting one-by-one...".format(num_classrooms))
+            print("\nCreated {} classrooms, infecting one-by-one..."
+                .format(num_classrooms))
 
         # now, infect all the students in all the classrooms, one by one
         #  (checking along the way that the infection was done correctly and did
@@ -107,12 +108,14 @@ def test_total_infection(verbose, num_tests):
             teacher = classrooms[i]
             if teacher.num_students == 0 or random.choice([True, False]):
                 if verbose:
-                    print("   Infecting classroom {} via the teacher.".format(i + 1))
+                    print("   Infecting classroom {} via the teacher."
+                        .format(i + 1))
                 teacher.infect()
             else:
                 teacher.get_random_student().infect()
                 if verbose:
-                    print("   Infecting classroom {} via a random student.".format(i + 1))
+                    print("   Infecting classroom {} via a random student."
+                        .format(i + 1))
 
             test_infected(teacher, True)
             # test that classrooms 0 up to and including i are still infected

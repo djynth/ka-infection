@@ -27,7 +27,8 @@ class Teacher:
     def num_infected(self):
         """The number of infected users in this classroom (including the
            teacher)."""
-        return self.infected + sum(student.infected for student in self._students)
+        return self.infected + sum(student.infected for student in
+            self._students)
 
     @property
     def infected(self):

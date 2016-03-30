@@ -100,16 +100,19 @@ def close_enough(classrooms, target, delta = 1.0):
     return selected
 
 def usage():
-    print("Attempts to solve the Limited Infection problem for classrooms of given sizes.")
-    print("   -h | --help       : print this help message")
-    print("   -v | --verbose    : print verbose output for each test")
-    print("   -b | --bruteforce : use the bruteforce algorithm")
-    print("   -n TESTS          : run TESTS number of tests (default 50)")
-    print("   -d DELTA          : the required level of accuracy (see 'close_enough') (default 1.0)")
+    print(("Runs randomized tests for the Limited Infection scenario and "
+           "evaluates how successfully and accurately solutions can be found."))
+    print( "   -h | --help    : print this help message")
+    print( "   -v | --verbose : print verbose output for each test")
+    print( "   -b | --bf      : use the brute force algorithm")
+    print( "   -n TESTS       : run TESTS number of tests (default 50)")
+    print(("   -d DELTA       : the required accuracy delta (see "
+           "'close_enough') (default 1.0)"))
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, "hvbn:d:", ["help", "verbose", "bruteforce"])
+        opts, args = getopt.getopt(argv, "hvbn:d:",
+            ["help", "verbose", "bruteforce"])
     except getopt.GetoptError:
         usage()
         return
@@ -150,12 +153,14 @@ def main(argv):
             classrooms.append(teacher)
 
         if verbose:
-            print("Created {} classrooms with a total of {} users.".format(len(classrooms), num_students))
+            print("Created {} classrooms with a total of {} users."
+                .format(len(classrooms), num_students))
 
         # aim for 5-20% of the userbase to be infected
         target = int(random.uniform(0.05, 0.20) * num_students)
         if verbose:
-            print("Target is {} users, {:.2%} of the userbase.".format(target, float(target) / num_students))
+            print("Target is {} users, {:.2%} of the userbase."
+                .format(target, float(target) / num_students))
 
         if bf:
             solution = bruteforce(list(classrooms), target)
@@ -169,7 +174,8 @@ def main(argv):
             accuracies.append(accuracy)
 
             if verbose:
-                print("Adequate solution found with {} users infected, within {:.2%} of the target.".format(num_infected, accuracy))
+                print(("Adequate solution found with {} users infected, within "
+                       "{:.2%} of the target.").format(num_infected, accuracy))
         else:
             if verbose:
                 print("No Adequate solution found.")
@@ -177,7 +183,8 @@ def main(argv):
     if verbose:
         print("\n")
     print("Success rate: {:.2%}".format(float(successes) / num_tests))
-    print("Average accuracy on success: {:.2%}".format(sum(accuracies) / successes))
+    print("Average accuracy on success: {:.2%}"
+        .format(sum(accuracies) / successes))
 
 if __name__ == "__main__":
     main(sys.argv[1:])
