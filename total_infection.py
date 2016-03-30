@@ -138,7 +138,7 @@ def usage():
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, "hvn:", ["help, verbose"])
+        opts, args = getopt.getopt(argv, "hvn:", ["help", "verbose"])
     except getopt.GetoptError:
         usage()
         return
@@ -146,10 +146,10 @@ def main(argv):
     verbose = False
     num_tests = 100
     for opt, arg in opts:
-        if opt in ["-h", "help"]:
+        if opt in ["-h", "--help"]:
             usage()
             return
-        elif opt in ["-v", "verbose"]:
+        elif opt in ["-v", "--verbose"]:
             verbose = True
         elif opt in ["-n"]:
             num_tests = int(arg)

@@ -125,12 +125,12 @@ def main(argv):
     num_tests = 100
     delta = 1.0
     for opt, arg in opts:
-        if opt in ["-h", "help"]:
+        if opt in ["-h", "--help"]:
             usage()
             return
-        elif opt in ["-v", "verbose"]:
+        elif opt in ["-v", "--verbose"]:
             verbose = True
-        elif opt in ["-b", "bf"]:
+        elif opt in ["-b", "--bf"]:
             bf = True
         elif opt in ["-n"]:
             num_tests = int(arg)
