@@ -49,12 +49,15 @@ def close_enough(classrooms, target, delta = 1.0):
 
     Our strategy is to add random classrooms to the selected set until we get
      "close enough" to the target.
+    "Close enough" is defined as within the size of the average classroom times
+     the given delta.
     This strategy is nice in a few ways:
     * the algorithm is very simple and clean
     * most classrooms chosen are random - this means that users are roughly
       equally likely to get early access to new features
     * it runs in (expected) polynomial time, and if the distribution of
-      classroom size is reasonable, it runs very quickly
+      classroom size is reasonable and class sizes are small compared to the
+      target, it runs very quickly
 
     @param classrooms : the classrooms among which to choose
     @param target : the target number of students to infect
@@ -94,7 +97,7 @@ def close_enough(classrooms, target, delta = 1.0):
             #  much
             classrooms.append(selection)
             last_addition += 1
-            if last_addition > len(classrooms):
+            if last_addition > len(classrooms) / 2:
                 return None
 
     return selected
@@ -105,7 +108,7 @@ def usage():
     print( "   -h | --help    : print this help message")
     print( "   -v | --verbose : print verbose output for each test")
     print( "   -b | --bf      : use the brute force algorithm")
-    print( "   -n TESTS       : run TESTS number of tests (default 50)")
+    print( "   -n TESTS       : run TESTS number of tests (default 100)")
     print(("   -d DELTA       : the required accuracy delta (see "
            "'close_enough') (default 1.0)"))
 
@@ -119,7 +122,7 @@ def main(argv):
 
     verbose = False
     bf = False
-    num_tests = 50
+    num_tests = 100
     delta = 1.0
     for opt, arg in opts:
         if opt in ["-h", "help"]:
@@ -142,15 +145,15 @@ def main(argv):
         if verbose:
             print("\n### Limited Infection Test {} ###\n".format(i+1))
 
+        # create a random number of randomly sized classrooms
         num_students = max(0, int(random.normalvariate(10000, 2500)))
         remaining_students = num_students
         classrooms = []
         while remaining_students > 0:
             classroom_size = max(0, int(random.normalvariate(40, 5)))
             classroom_size = min(remaining_students, classroom_size)
-            teacher = Teacher(classroom_size)
             remaining_students -= classroom_size
-            classrooms.append(teacher)
+            classrooms.append(Teacher(classroom_size))
 
         if verbose:
             print("Created {} classrooms with a total of {} users."
@@ -162,6 +165,7 @@ def main(argv):
             print("Target is {} users, {:.2%} of the userbase."
                 .format(target, float(target) / num_students))
 
+        # look for a solution and update our statistics if one is found
         if bf:
             solution = bruteforce(list(classrooms), target)
         else:
@@ -183,7 +187,7 @@ def main(argv):
     if verbose:
         print("\n")
     print("Success rate: {:.2%}".format(float(successes) / num_tests))
-    print("Average accuracy on success: {:.2%}"
+    print("Average accuracy on success: off by {:.2%} of the target"
         .format(sum(accuracies) / successes))
 
 if __name__ == "__main__":
