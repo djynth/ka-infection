@@ -43,7 +43,7 @@ def test_total_infection(verbose, num_tests):
 
     Aborts on error, or prints a success message if all tests were passed."""
 
-    print("Running {} Total Infeciton tests...".format(num_tests))
+    print("Running {} Total Infection tests...".format(num_tests))
 
     for i in range(num_tests):
         if verbose:

@@ -64,7 +64,6 @@ class Teacher:
         if self.num_students == 0:
             return None
         return random.choice(self._students)
-        return self.get_student(random.randint(0, self.num_students-1))
 
     def __str__(self):
         return "[{}/{}]".format(self.num_infected, self.num_users)
